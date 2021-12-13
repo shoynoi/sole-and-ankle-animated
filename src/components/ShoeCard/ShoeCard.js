@@ -35,14 +35,12 @@ const ShoeCard = ({
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
         <ImageWrapper>
-          <ShoeImageWrapper>
-            <Image alt="" src={imageSrc} />
-          </ShoeImageWrapper>
-          {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
-          {variant === 'new-release' && (
-            <NewFlag>Just released!</NewFlag>
-          )}
+          <Image alt="" src={imageSrc} />
         </ImageWrapper>
+        {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
+        {variant === 'new-release' && (
+          <NewFlag>Just released!</NewFlag>
+        )}
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
@@ -75,25 +73,28 @@ const Link = styled.a`
   color: inherit;
 `;
 
-const Wrapper = styled.article``;
-
-const ImageWrapper = styled.div`
+const Wrapper = styled.article`
   position: relative;
 `;
 
-const ShoeImageWrapper = styled.div`
-  overflow: hidden;
+const ImageWrapper = styled.div`
   border-radius: 16px 16px 4px 4px;
-`
+  overflow: hidden;
+`;
 
 const Image = styled.img`
+  display: block;
   width: 100%;
   transition: transform, 400ms;
-  transform-origin: bottom;
-
-  &:hover {
-    transform: scale(1.1);
-    transition: transform, 200ms;
+  transform-origin: 50% 75%;
+  will-change: transform;
+  
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    ${Link}:hover &,
+    ${Link}:focus & {
+      transform: scale(1.1);
+      transition: transform, 200ms;
+    } 
   }
 `;
 
