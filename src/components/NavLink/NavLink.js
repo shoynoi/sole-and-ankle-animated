@@ -5,8 +5,8 @@ import { WEIGHTS } from '../../constants'
 const NavLink = ({ children, ...props }) => {
   return (
     <Wrapper {...props} >
-      <FrontLink>{children}</FrontLink>
-      <BackLink>{children}</BackLink>
+      <MainText>{children}</MainText>
+      <HoverText>{children}</HoverText>
     </Wrapper>
   )
 }
@@ -25,40 +25,36 @@ const Wrapper = styled.a`
   }
 `
 
-const LinkText = styled.span`
+const Text = styled.span`
   display: block;
-  transition: transform 200ms;
+  transform: translateY(var(--translate-from));
+  transition: transform 500ms;
   will-change: transform;
-  
-`
-
-const FrontLink = styled(LinkText)`
-  transform: translateY(0);
 
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
     ${Wrapper}:hover &,
     ${Wrapper}:focus & {
-      transform: translateY(-100%);
-    } 
+      transform: translateY(var(--translate-to));
+      transition: transform 200ms;
+    }
   }
 `
 
-const BackLink = styled(LinkText)`
-  transform: translateY(100%);
+const MainText = styled(Text)`
+  --translate-from: 0%;
+  --translate-to: -100%;
+`
+
+const HoverText = styled(Text)`
+  --translate-from: 100%;
+  --translate-to: 0%;
 
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  font-weight: 900;
-
-  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    ${Wrapper}:hover &,
-    ${Wrapper}:focus & {
-      transform: translateY(0);
-    }
-  }
+  font-weight: ${WEIGHTS.bold};
 `
 
 export default NavLink
