@@ -11,84 +11,100 @@ import VisuallyHidden from '../VisuallyHidden';
 
 const MobileMenu = ({ isOpen, onDismiss }) => {
   return (
-    <Overlay isOpen={isOpen} onDismiss={onDismiss}>
+    <Wrapper isOpen={isOpen} onDismiss={onDismiss}>
+      <Backdrop />
       <Content aria-label="Menu">
-        <CloseButton onClick={onDismiss}>
-          <Icon id="close" />
-          <VisuallyHidden>Dismiss menu</VisuallyHidden>
-        </CloseButton>
-        <Filler />
-        <Nav>
-          <NavLink href="/sale">Sale</NavLink>
-          <NavLink href="/new">New&nbsp;Releases</NavLink>
-          <NavLink href="/men">Men</NavLink>
-          <NavLink href="/women">Women</NavLink>
-          <NavLink href="/kids">Kids</NavLink>
-          <NavLink href="/collections">Collections</NavLink>
-        </Nav>
-        <Footer>
-          <SubLink href="/terms">Terms and Conditions</SubLink>
-          <SubLink href="/privacy">Privacy Policy</SubLink>
-          <SubLink href="/contact">Contact Us</SubLink>
-        </Footer>
+        <InnerWrapper>
+          <CloseButton onClick={onDismiss}>
+            <Icon id="close" />
+            <VisuallyHidden>Dismiss menu</VisuallyHidden>
+          </CloseButton>
+          <Filler />
+          <Nav>
+            <NavLink href="/sale">Sale</NavLink>
+            <NavLink href="/new">New&nbsp;Releases</NavLink>
+            <NavLink href="/men">Men</NavLink>
+            <NavLink href="/women">Women</NavLink>
+            <NavLink href="/kids">Kids</NavLink>
+            <NavLink href="/collections">Collections</NavLink>
+          </Nav>
+          <Footer>
+            <SubLink href="/terms">Terms and Conditions</SubLink>
+            <SubLink href="/privacy">Privacy Policy</SubLink>
+            <SubLink href="/contact">Contact Us</SubLink>
+          </Footer>
+        </InnerWrapper>
       </Content>
-    </Overlay>
+    </Wrapper>
   );
 };
 
 const fadeIn = keyframes`
-  0% {
+  from {
     opacity: 0;
   }
-  
-  50% {
-    opacity: 0.5;
-  }
-  
-  100% {
+  to {
     opacity: 1;
   }
-`
-const Overlay = styled(DialogOverlay)`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--color-backdrop);
-  display: flex;
-  justify-content: flex-end;
-  animation: ${fadeIn} 400ms ease-in;
 `;
 
 const slideIn = keyframes`
   from {
     transform: translateX(100%);
   }
-
   to {
     transform: translateX(0%);
   }
-`
+`;
+
+const Wrapper = styled(DialogOverlay)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const Backdrop = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-backdrop);
+  animation: ${fadeIn} 500ms;
+`;
 
 const Content = styled(DialogContent)`
+  --overfill: 16px;
+  position: relative;
   background: white;
-  width: 300px;
+  width: calc(300px + var(--overfill));
   height: 100%;
+  margin-right: calc(var(--overfill) * -1);
   padding: 24px 32px;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: ${slideIn} 500ms both cubic-bezier(0, 0.6, 0.32, 1.06);
+    animation-delay: 200ms;
+  }
+`;
+
+const InnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  animation: ${slideIn} 250ms ease-out;
-  
-  & > * {
-    animation: ${fadeIn} 500ms ease-in;
-  }
+  height: 100%;
+  animation: ${fadeIn} 600ms both;
+  animation-delay: 400ms;
 `;
 
 const CloseButton = styled(UnstyledButton)`
   position: absolute;
   top: 10px;
-  right: 0;
+  right: var(--overfill);
   padding: 16px;
 `;
 
